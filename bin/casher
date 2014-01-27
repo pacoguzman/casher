@@ -10,8 +10,8 @@ class Casher
     @casher_dir = ENV['CASHER_DIR'] || File.expand_path(".casher", ENV["HOME"])
     @mtime_file = File.expand_path('mtime.yml', @casher_dir)
     @md5_file   = File.expand_path('md5.yml',   @casher_dir)
-    @fetch_tar  = File.expand_path('fetch.tbz', @casher_dir)
-    @push_tar   = File.expand_path('push.tbz',  @casher_dir)
+    @fetch_tar  = File.expand_path('fetch.tgz', @casher_dir)
+    @push_tar   = File.expand_path('push.tgz',  @casher_dir)
     @mtimes     = File.exist?(@mtime_file) ? YAML.load_file(@mtime_file) : {}
     mkdir_p @casher_dir
   end
@@ -115,7 +115,7 @@ class Casher
   end
 
   def tar(flag, file, *args, &block)
-    command = "tar -Pj#{flag}f #{Shellwords.escape(file)} #{Shellwords.join(args)}"
+    command = "tar -Pz#{flag}f #{Shellwords.escape(file)} #{Shellwords.join(args)}"
     block ||= proc { puts "FAILED: #{command}", File.read("#{@casher_dir}/tar.err.log"), File.read("#{@casher_dir}/tar.log") }
     block.call unless system "#{command} 2>#{@casher_dir}/tar.err.log >#{@casher_dir}/tar.log"
   end
