@@ -105,8 +105,8 @@ class Casher
       if unchanged_mtime?(file, mtime) && md5sums.include?(file)
         new_md5sums[file] = md5sums[file]
       else
-        $stdout.print '.'
-        $stdout.flush
+        #$stdout.print '.'
+        #$stdout.flush
         new_md5sums[file] = md5(file)
       end
     end
